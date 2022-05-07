@@ -11,6 +11,14 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'select-stock',
+    loadChildren: () => import('./select-stock/select-stock.module').then( m => m.SelectStockPageModule)
+  },
+  {
+    path: 'quote-viewer',
+    loadChildren: () => import('./quote-viewer/quote-viewer.module').then( m => m.QuoteViewerPageModule)
+  },
 ];
 
 @NgModule({

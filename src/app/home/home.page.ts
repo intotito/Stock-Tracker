@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,22 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
   logoImg: string = "./assets/img/logo.png";
-  constructor() {}
+  constructor(private router: Router) {}
+
+  selectStock(): void{
+//    let a = {interval: this.funxtions[this.value], symbol: this.symbol, duration: this.range, index: this.quotesKeys(this.funxtions).indexOf(this.value)};
+//    console.log(a);
+    let a = {symbol: 'IBM'};
+    this.router.navigate(['/select-stock', a]);
+  }
+
+  searchSymbol(): void{
+
+  }
+
+  showAbout(): void{
+
+  }
+
 
 }
