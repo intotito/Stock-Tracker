@@ -21,27 +21,36 @@
     <ion-button (click)="searchSymbol()">Search</ion-button>
   </ion-item>
 
-  <ion-grid class="ion-margin" [hidden]="!found">
+  <ion-grid [hidden]="!found">
     
-    <ion-row>
-      <ion-col size="1">S.No</ion-col>
-      <ion-col size="2">Symbol</ion-col>
-      <ion-col size="4">Company Name</ion-col>
-      <ion-col size="2">Stock Exchange</ion-col>
-      <ion-col size="1"></ion-col>
+    <ion-row id="grid-heading">
+      <ion-col size="2">
+          <ion-label>S/N</ion-label>
+      </ion-col>
+      <ion-col size="2">
+          <ion-label>Sym.</ion-label>
+      </ion-col>
+      <ion-col size="5">
+        <ion-label>Name</ion-label>
+      </ion-col>
+      <ion-col size="3">
+          <ion-label>Exchange</ion-label>
+      </ion-col>
     </ion-row>
+
     <ion-row *ngFor="let a of data; index as i">
-      <ion-col>{{i + 1}}</ion-col>
-      <ion-col>{{a.symbol}}</ion-col>
-      <ion-col>{{a.name}}</ion-col>
-      <ion-col>{{a.exchangeShortName}}</ion-col>
-      <ion-col>copy</ion-col>
+      <ion-col size="2">
+          <ion-label>{{i + 1}}</ion-label>
+      </ion-col>
+      <ion-col size="2">
+          <ion-label>{{a.symbol}}</ion-label>
+      </ion-col>
+      <ion-col size="5">
+          <ion-label>{{a.name}}</ion-label>
+      </ion-col>
+      <ion-col size="3">
+          <ion-label>{{a.exchangeShortName}}</ion-label>
+      </ion-col>
     </ion-row>
   </ion-grid>
-
-  <ion-item lines="none">
-    <ion-button color="primary" size="small" slot="end" routerLink="/material">
-      Material Design Table
-    </ion-button>
-  </ion-item>
 </ion-content>

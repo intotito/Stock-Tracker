@@ -1,3 +1,20 @@
-*{
-    font-size: small;
+ion-grid {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    font-size: x-small;
+    width: 98%;
+  
+    #grid-heading {
+      background-color: red;
+      border: 1px solid red;
+    }
+    ion-row {
+      border: 1px solid #dddddd;
+    }  
+    ion-row:nth-child(even) {
+      background-color: #d3a7a7;
+    }
+    ion-col {
+      border-right: 1px solid #dddddd;
+    }
 }
