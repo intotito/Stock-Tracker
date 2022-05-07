@@ -18,7 +18,7 @@ export class HomePage {
   }
 
   searchSymbol(): void{
-
+    this.router.navigate(['/search-symbol']);
   }
 
   showAbout(): void{

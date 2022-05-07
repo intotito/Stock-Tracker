@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'quote-viewer',
     loadChildren: () => import('./quote-viewer/quote-viewer.module').then( m => m.QuoteViewerPageModule)
   },
+  {
+    path: 'search-symbol',
+    loadChildren: () => import('./search-symbol/search-symbol.module').then( m => m.SearchSymbolPageModule)
+  },
 ];
 
 @NgModule({
