@@ -3,6 +3,7 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { QuoteGetterService } from '../Service/quote-getter.service';
 
+
 @Component({
   selector: 'app-quote-viewer',
   templateUrl: './quote-viewer.page.html',
@@ -42,6 +43,7 @@ export class QuoteViewerPage implements OnInit {
       this.dataKeys = Object.keys(this.data);
  //     console.log("check it");
  //     console.log(this.dataKeys);
+      this.cardinality = Math.min(this.cardinality, this.dataKeys.length);
         this.paintCanvas();
     });
     

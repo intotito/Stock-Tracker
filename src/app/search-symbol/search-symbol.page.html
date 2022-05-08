@@ -30,11 +30,14 @@
       <ion-col size="2">
           <ion-label>Sym.</ion-label>
       </ion-col>
-      <ion-col size="5">
+      <ion-col size="4">
         <ion-label>Name</ion-label>
       </ion-col>
       <ion-col size="3">
           <ion-label>Exchange</ion-label>
+      </ion-col>
+      <ion-col size="1">
+        
       </ion-col>
     </ion-row>
 
@@ -43,13 +46,18 @@
           <ion-label>{{i + 1}}</ion-label>
       </ion-col>
       <ion-col size="2">
-          <ion-label>{{a.symbol}}</ion-label>
+          <ion-label button (click)="redirect(a.symbol)"><a>{{a.symbol}}</a></ion-label>
       </ion-col>
-      <ion-col size="5">
+      <ion-col size="4">
           <ion-label>{{a.name}}</ion-label>
       </ion-col>
       <ion-col size="3">
           <ion-label>{{a.exchangeShortName}}</ion-label>
+      </ion-col>
+      <ion-col size="1">
+        <span button (click)="copyToClipboard(a.symbol)" title="Copy Symbol">
+          <ion-icon name="copy-outline"></ion-icon>
+        </span>
       </ion-col>
     </ion-row>
   </ion-grid>

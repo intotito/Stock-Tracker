@@ -13,7 +13,7 @@ export class HomePage {
   selectStock(): void{
 //    let a = {interval: this.funxtions[this.value], symbol: this.symbol, duration: this.range, index: this.quotesKeys(this.funxtions).indexOf(this.value)};
 //    console.log(a);
-    let a = {symbol: 'IBM'};
+    let a = {};
     this.router.navigate(['/select-stock', a]);
   }
 
