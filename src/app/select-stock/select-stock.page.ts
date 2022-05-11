@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router'
 import { ActivatedRoute } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-select-stock',
   templateUrl: './select-stock.page.html',
   styleUrls: ['./select-stock.page.scss'],
 })
-export class SelectStockPage implements OnInit {
+export class SelectStockPage implements OnInit{
 
   quotesKeys = Object.keys;
   quotes = {
@@ -21,14 +22,13 @@ export class SelectStockPage implements OnInit {
     Weekly: "TIME_SERIES_WEEKLY",
     Monthly: "TIME_SERIES_MONTHLY"
   };
-  symbol: string = "";
+  symbol: string;
   range:number = 50;
   value = this.quotes["days"];
   
 
-  constructor(private router : Router, private route: ActivatedRoute) {
+  constructor(private router : Router, private route: ActivatedRoute, private storage: Storage) {
     this.symbol = this.route.snapshot.paramMap.get('symbol');
-    
   }
   getKey(value){
     return this.quotesKeys(this.quotes).find(k=>this.quotes[k]===this.value);
@@ -41,6 +41,15 @@ export class SelectStockPage implements OnInit {
   }
 
   ngOnInit() {
+    
   }
-
+  ionViewDidEnter(): void{
+    if(!this.symbol){
+      this.storage.create().then(()=>{
+        this.storage.get("symbol").then((value: any)=>{
+          this.symbol = value;
+        }).catch(()=>alert('Could not load symbol'));
+      }).catch();
+    }
+  }
 }

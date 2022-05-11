@@ -27,7 +27,7 @@ export class QuoteViewerPage implements OnInit {
     "Monthly Time Series"
   ];
 
-  constructor(private route: ActivatedRoute, private quoteGetter: QuoteGetterService, 
+  constructor(private route: ActivatedRoute, private quoteGetter: QuoteGetterService, private storage: Storage, 
     private platform: Platform, private menu: MenuController, private imageSaver: ImageSaverService) { 
     this.interval = this.route.snapshot.paramMap.get('interval');
     this.symbol = this.route.snapshot.paramMap.get('symbol');
@@ -66,7 +66,7 @@ export class QuoteViewerPage implements OnInit {
       this.data = data[this.keys[this.index]];
       this.dataKeys = Object.keys(this.data);
  //     console.log("check it");
- //     console.log(this.dataKeys);
+      this.saveSymbol();
       this.cardinality = Math.min(this.cardinality, this.dataKeys.length);    
         this.paintCanvas();
         this.imageSaver.setCanvas(<HTMLCanvasElement>document.getElementById("canvas"), this.symbol);
@@ -286,4 +286,9 @@ export class QuoteViewerPage implements OnInit {
     return months[month];
   }
 
+  saveSymbol(): void{
+    this.storage.create().then(()=>{
+      this.storage.set("symbol", this.symbol);
+    }).catch(()=>{alert('Could not save symbol')});
+  }
 }
