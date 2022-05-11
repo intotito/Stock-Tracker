@@ -20,7 +20,7 @@ export class QuoteViewerPage implements OnInit {
   data: any;
   dataKeys: string[];
   cardinality: number = 100;
-
+  company: any;
   keys: string[] = [
     "Time Series (Daily)", 
     "Weekly Time Series", 
@@ -55,7 +55,13 @@ export class QuoteViewerPage implements OnInit {
   ngOnInit() {
     let url = 'https://www.alphavantage.co/query?function=' + this.interval +
        '&symbol=' + this.symbol + '&apikey=' + '1ONYPOW67MNS430D';
+    let url1 = 'https://www.alphavantage.co/query?function=OVERVIEW&symbol=' + this.symbol + 
+      '&apikey=1ONYPOW67MNS430D';
     console.log(url);
+    this.quoteGetter.getQuotes(url1).subscribe((data)=>{
+        this.company = data;
+        console.log(this.company);
+    });
     this.quoteGetter.getQuotes(url).subscribe((data)=>{
       this.data = data[this.keys[this.index]];
       this.dataKeys = Object.keys(this.data);
@@ -265,6 +271,14 @@ export class QuoteViewerPage implements OnInit {
      ((this.data[this.dataKeys[0]]['4. close'] - this.data[this.dataKeys[this.cardinality - 1]]['4. close']) / this.data[this.dataKeys[this.cardinality - 1]]['4. close']).toFixed(2)
      + "%",
       padding + txtM.width + 5, height + tickSize * 8);
+      // Company Info
+      ctx.fillStyle = 'grey';
+     ctx.fillText("Company Name: " + this.company['Name'] , padding / 4, height + tickSize * 10);
+     ctx.fillText("Stock Exchange: " + this.company['Exchange'], padding / 4, height + tickSize * 12);
+     ctx.fillText("Currency: " + this.company['Currency'], padding / 4, height + tickSize * 14);
+     ctx.fillText("Sector: " + this.company['Sector'], padding / 4, height + tickSize * 16);
+     ctx.fillText("Industry: " + this.company['Industry'], padding / 4, height + tickSize * 18);
+     ctx.fillText("Address: " + this.company['Address'], padding / 4, height + tickSize * 20);
   }
 
   getMonth(month: number): string{
