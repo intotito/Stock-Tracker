@@ -83,23 +83,26 @@ export class QuoteViewerPage implements OnInit {
   }
 
   getMinimumValue() : number[] {
+    let avg: number = 0;
     let min: number = 0;
     let minValue: number = Number(this.data[this.dataKeys[0]]['4. close']);
+    avg += minValue;
     for(let i = 1; i < this.cardinality - 1; i++){
+      avg += (Number(this.data[this.dataKeys[i]]['4. close']));
       if(Number(this.data[this.dataKeys[i]]['4. close']) < minValue){
         min = i;
         minValue = Number(this.data[this.dataKeys[i]]['4. close']);
       }
     }
-    return [min, minValue];
+    return [min, minValue, avg / this.cardinality];
   }
 
   paintCanvas(){
     let canvas = <HTMLCanvasElement>document.getElementById("canvas");
     console.log(this.platform.height() + " -- " + this.platform.width());
-    canvas.height = (this.platform.width());
+    canvas.height = (this.platform.height());
     canvas.width = (this.platform.width());
-    let height: number = canvas.height
+    let height: number = canvas.width;
     let width: number = canvas.width;
     let padding: number = 40;
     var ctx = canvas.getContext("2d");
@@ -120,9 +123,11 @@ export class QuoteViewerPage implements OnInit {
     ctx.stroke();
     ctx.closePath();
     
- 
-    let max: number = this.getMaximumValue()[1];
-    let min: number = this.getMinimumValue()[1];
+    let maxArr = this.getMaximumValue();
+    let max: number = maxArr[1];
+    let minArr = this.getMinimumValue();
+    let min: number = minArr[1];
+    let avg: number = minArr[2];
     let range = min - (max - min) / 8;
 
     console.log('Maximum = ' + max + '\nMiniumu' + min);
@@ -174,6 +179,7 @@ export class QuoteViewerPage implements OnInit {
 
   // Y axis labels
   ctx.beginPath();
+    ctx.font = "10px sans-serif";
     ctx.fillStyle = 'white';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
@@ -234,6 +240,31 @@ export class QuoteViewerPage implements OnInit {
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.closePath();
+
+    // Heading
+    ctx.font = "18px sans-serif"
+    ctx.fillStyle = 'green';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    let txtM: TextMetrics = ctx.measureText(this.symbol.toUpperCase() + " Stock");
+    ctx.fillText(this.symbol.toUpperCase() + " Stock",
+     (width - txtM.width) / 2, tickSize * 2);
+
+     // Statistics
+     ctx.font = "10px sans-serif"
+     ctx.fillStyle = 'orange';
+     ctx.textAlign = 'left';
+     ctx.textBaseline = 'middle';
+     ctx.fillText("Highest value: " + maxArr[1] + " (" +this.dataKeys[maxArr[0]]+ ")", padding, height + tickSize * 2);
+     ctx.fillText("Lowest value: " + minArr[1] + " (" +this.dataKeys[minArr[0]]+ ")", padding, height + tickSize * 4);
+     ctx.fillText("Average value: " + minArr[2].toFixed(2), padding, height + tickSize * 6);
+     txtM = ctx.measureText("Increase: ");
+     ctx.fillText("Increase: ", padding, height + tickSize * 8);
+     ctx.fillStyle = (this.data[this.dataKeys[this.cardinality - 1]]['4. close'] > this.data[this.dataKeys[0]]['4. close'] ? 'red': 'green');
+     ctx.fillText((this.data[this.dataKeys[this.cardinality - 1]]['4. close'] < this.data[this.dataKeys[0]]['4. close'] ? "\u21E7" : ("\u21E9")) + " " +
+     ((this.data[this.dataKeys[0]]['4. close'] - this.data[this.dataKeys[this.cardinality - 1]]['4. close']) / this.data[this.dataKeys[this.cardinality - 1]]['4. close']).toFixed(2)
+     + "%",
+      padding + txtM.width + 5, height + tickSize * 8);
   }
 
   getMonth(month: number): string{
