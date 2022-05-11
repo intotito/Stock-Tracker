@@ -110,7 +110,7 @@ export class QuoteViewerPage implements OnInit {
     canvas.width = (this.platform.width());
     let height: number = canvas.width;
     let width: number = canvas.width;
-    let padding: number = 40;
+    let padding: number = 2 * 20;
     var ctx = canvas.getContext("2d");
     let H: number = height - 2 * padding;
     let W: number = width - 2 * padding;
