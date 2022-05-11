@@ -2,6 +2,9 @@ import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { QuoteGetterService } from '../Service/quote-getter.service';
+import { ImageSaverService } from '../Service/image-saver.service';
+import { Storage } from '@ionic/storage-angular';
+import { MenuController } from '@ionic/angular';
 
 
 @Component({
@@ -24,14 +27,29 @@ export class QuoteViewerPage implements OnInit {
     "Monthly Time Series"
   ];
 
-  constructor(private route: ActivatedRoute, private quoteGetter: QuoteGetterService, private platform: Platform) { 
+  constructor(private route: ActivatedRoute, private quoteGetter: QuoteGetterService, 
+    private platform: Platform, private menu: MenuController, private imageSaver: ImageSaverService) { 
     this.interval = this.route.snapshot.paramMap.get('interval');
     this.symbol = this.route.snapshot.paramMap.get('symbol');
     this.duration = Number(this.route.snapshot.paramMap.get('duration'));
     this.index = Number(this.route.snapshot.paramMap.get('index'));
     this.cardinality = this.duration;
  //   this.cardinality = Math.min(5, this.cardinality);
+
     console.log("Check  this " + this.interval + " -- " + this.symbol + " --" + this.duration);
+  }
+  openFirst() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+
+  openEnd() {
+    this.menu.open('end');
+  }
+
+  openCustom() {
+    this.menu.enable(true, 'custom');
+    this.menu.open('custom');
   }
 
   ngOnInit() {
@@ -43,8 +61,9 @@ export class QuoteViewerPage implements OnInit {
       this.dataKeys = Object.keys(this.data);
  //     console.log("check it");
  //     console.log(this.dataKeys);
-      this.cardinality = Math.min(this.cardinality, this.dataKeys.length);
+      this.cardinality = Math.min(this.cardinality, this.dataKeys.length);    
         this.paintCanvas();
+        this.imageSaver.setCanvas(<HTMLCanvasElement>document.getElementById("canvas"));
     });
     
   }
@@ -87,7 +106,8 @@ export class QuoteViewerPage implements OnInit {
     let H: number = height - 2 * padding;
     let W: number = width - 2 * padding;
 
-    
+    ctx.fillStyle='black';
+    ctx.fillRect(0,0,canvas.width, canvas.height);
 
 // X and Y axis
     ctx.beginPath();
@@ -153,6 +173,7 @@ export class QuoteViewerPage implements OnInit {
     ctx.closePath();
 
   // Y axis labels
+  ctx.beginPath();
     ctx.fillStyle = 'white';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
@@ -195,7 +216,7 @@ export class QuoteViewerPage implements OnInit {
       tempMonth = date.getMonth();
       tempYear = date.getFullYear();
     }
-
+    ctx.closePath();
 
 // Graph
     ctx.beginPath();

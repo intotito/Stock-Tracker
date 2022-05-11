@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ImageSaverService } from './Service/image-saver.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private imageSaver: ImageSaverService) {}
+
+  saveImage(): void{
+    console.log("Image saved");
+    this.imageSaver.saveImage();
+
+    
+  }
 }

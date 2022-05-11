@@ -1,3 +1,17 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu side="start" menuId="content" contentId="content" type="reveal">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item button (click)="saveImage()">Save</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  
+
+  <ion-router-outlet id="content"></ion-router-outlet>
 </ion-app>
