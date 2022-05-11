@@ -10,6 +10,7 @@ import { Clipboard } from '@awesome-cordova-plugins/clipboard/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

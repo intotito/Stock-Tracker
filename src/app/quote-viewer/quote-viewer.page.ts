@@ -69,7 +69,7 @@ export class QuoteViewerPage implements OnInit {
  //     console.log(this.dataKeys);
       this.cardinality = Math.min(this.cardinality, this.dataKeys.length);    
         this.paintCanvas();
-        this.imageSaver.setCanvas(<HTMLCanvasElement>document.getElementById("canvas"));
+        this.imageSaver.setCanvas(<HTMLCanvasElement>document.getElementById("canvas"), this.symbol);
     });
     
   }

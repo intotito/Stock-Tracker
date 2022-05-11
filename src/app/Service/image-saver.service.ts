@@ -1,23 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
+import { Base64ToGalleryOptions } from '@ionic-native/base64-to-gallery';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageSaverService {
+  private symbol: string;
   private canvas: HTMLCanvasElement;
-  constructor(private platform: Platform) { }
-  setCanvas(canvas: HTMLCanvasElement){
+  constructor(private platform: Platform, 
+ //   private base64ToGallery: Base64ToGallery, 
+    private toastCtrl: ToastController) { }
+  setCanvas(canvas: HTMLCanvasElement, symbol: string){
     this.canvas = canvas;
+    this.symbol = symbol;
   }
   saveImage(){
+// https://devdactic.com/ionic-canvas-drawing-files/
+
     console.log(this.canvas.height+ ":" + this.canvas.width);
     var dataUrl = this.canvas.toDataURL();
     var data = dataUrl.split(',')[1];
     let blob = this.b64toBlob(data, 'image/png');
  
     if (this.platform.is('cordova')) {
-      const options: Base64ToGalleryOptions = { prefix: 'canvas_', mediaScanner:  true };
+ /*     const options: Base64ToGalleryOptions = { prefix: 'canvas_', mediaScanner:  true };
    
       this.base64ToGallery.base64ToGallery(dataUrl, options).then(
         async res => {
@@ -29,25 +37,16 @@ export class ImageSaverService {
         },
         err => console.log('Error saving image to gallery ', err)
       );
-    } else{
+      */         } else{
       var a = window.document.createElement('a');
       a.href = window.URL.createObjectURL(blob);
-      a.download = 'canvasimage.png';
+      a.download = this.symbol + ".png";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
     }
   }
-// https://devdactic.com/ionic-canvas-drawing-files/
-  storeImage(imageName) {
-    let saveObj = { img: imageName };
-    this.storedImages.push(saveObj);
-    this.storage.set(STORAGE_KEY, this.storedImages).then(() => {
-      setTimeout(() =>  {
-        this.content.scrollToBottom();
-      }, 500);
-    });
-  }
+
   
   // https://forum.ionicframework.com/t/save-base64-encoded-image-to-specific-filepath/96180/3
   b64toBlob(b64Data, contentType) {
